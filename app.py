@@ -1,6 +1,8 @@
 import flask
 from flask import request, jsonify
 
+from handlers.loginHandler import login
+
 data = [
   {
     "id": 1,
@@ -18,6 +20,8 @@ data = [
 
 app = flask.Flask(__name__)
 app.config['DEBUG'] = True
+
+app.register_blueprint(login, url_prefix='/login')
 
 @app.route('/', methods=['GET'])
 def home():
