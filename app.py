@@ -1,8 +1,9 @@
 import flask
+import os
 from flask import request, jsonify, redirect, url_for
 from dotenv import load_dotenv
 from flask_dance.contrib.google import make_google_blueprint, google
-import os
+from flask_cors import CORS
 
 from handlers.loginHandler import login
 from handlers.userHandler import user
@@ -29,6 +30,7 @@ blueprint = make_google_blueprint(
 app = flask.Flask(__name__)
 app.config['DEBUG'] = True
 app.secret_key='supersecretkey'
+CORS(app)
 
 app.register_blueprint(blueprint, url_prefix='/login')
 app.register_blueprint(user, url_prefix='/user')
@@ -38,7 +40,7 @@ app.register_blueprint(request_status, url_prefix='/request_status')
 app.register_blueprint(signup, url_prefix='/signup')
 
 
-@app.route("/singin")
+@app.route("/signin")
 def index():
     if not google.authorized:
         return redirect(url_for("google.login"))
