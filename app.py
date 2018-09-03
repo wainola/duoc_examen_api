@@ -24,7 +24,8 @@ blueprint = make_google_blueprint(
   scope=[
         "https://www.googleapis.com/auth/plus.me",
         "https://www.googleapis.com/auth/userinfo.email",
-    ]
+    ],
+    redirect_url='http://localhost:3001'
 )
 
 app = flask.Flask(__name__)
@@ -40,14 +41,13 @@ app.register_blueprint(request_status, url_prefix='/request_status')
 app.register_blueprint(signup, url_prefix='/signup')
 
 
-@app.route("/signin")
+@app.route("/")
 def index():
     if not google.authorized:
+        # return jsonify({ 'msg': False})
         return redirect(url_for("google.login"))
     resp = google.get("/oauth2/v2/userinfo")
-    print('resp::::::::::::::::::::::', resp)
     assert resp.ok, resp.text
-    return "You are {email} on Google".format(email=resp.json()["email"])
 
 if __name__ == '__main__':
   app.run()
