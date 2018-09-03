@@ -2,6 +2,11 @@ import flask
 from flask import request, jsonify
 
 from handlers.loginHandler import login
+from handlers.userHandler import user
+from handlers.creditHandler import credit
+from handlers.executiveHandler import executive
+from handlers.requestStatusHandler import request_status
+from handlers.signupHandler import signup
 
 data = [
   {
@@ -22,6 +27,11 @@ app = flask.Flask(__name__)
 app.config['DEBUG'] = True
 
 app.register_blueprint(login, url_prefix='/login')
+app.register_blueprint(user, url_prefix='/user')
+app.register_blueprint(credit, url_prefix='/credit')
+app.register_blueprint(executive, url_prefix='/executive')
+app.register_blueprint(request_status, url_prefix='/request_status')
+app.register_blueprint(signup, url_prefix='/signup')
 
 @app.route('/', methods=['GET'])
 def home():
