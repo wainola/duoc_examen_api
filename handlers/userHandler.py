@@ -46,15 +46,13 @@ def usuarios():
 
   if request.method == 'GET':
 
-    print('get method')
-    
     conn = sqlite3.connect(DB_PATH)
 
     cursor = conn.execute('SELECT * FROM usuario')
 
     usuarios = cursor.fetchall()
 
-    return jsonify({'msg': usuarios})
+    return jsonify({'usuarios': usuarios})
 
   if request.method == 'DELETE':
 
