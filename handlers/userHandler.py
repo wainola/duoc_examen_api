@@ -70,7 +70,7 @@ def usuarios():
     if cur_row_count == 0:
       return jsonify({ 'user_deleted': False })
 
-  if request.method === 'PUT':
+  if request.method == 'PUT':
 
     user = request.get_json()['user']
     estado_solicitud = request.get_json()['request_status']

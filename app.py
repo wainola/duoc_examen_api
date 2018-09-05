@@ -23,7 +23,7 @@ app.register_blueprint(login, url_prefix='/api')
 app.register_blueprint(user, url_prefix='/api')
 app.register_blueprint(credit, url_prefix='/credit')
 app.register_blueprint(executive, url_prefix='/api')
-app.register_blueprint(request_status, url_prefix='/request_status')
+app.register_blueprint(request_status, url_prefix='/api')
 app.register_blueprint(signup, url_prefix='/api')
 
 
