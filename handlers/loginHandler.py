@@ -17,13 +17,13 @@ def getCredentials():
     password = credentials['credentials']['password']
     
     conn = sqlite3.connect(DB_PATH)
-    print("Database connected!")
     estado = 'PENDIENTE'
-    # q = f'SELECT * FROM estado_solicitud WHERE estado_solicitud = "{estado}"'
-    query = f'SELECT rut, password FROM usuario WHERE rut = "{rut}"'
 
+    sql = '''
+          SELECT rut, password FROM usuario WHERE rut = ?
+          '''
 
-    cursor = conn.execute(query)
+    cursor = conn.execute(sql, (rut,))
     if len(cursor.fetchall()) == 0:
       return jsonify({ 'msg': 'no hay usuarios en la base de datos', 'status': 404})
     else:
