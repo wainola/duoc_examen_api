@@ -1,7 +1,7 @@
 -- +goose Up
 -- SQL in this section is executed when the migration is applied.
 CREATE TABLE credito(
-  id integer primary key,
+  id text primary key,
   fk_usuario_id integer not null,
   fk_estado_solicitud_id integer not null,
   monto integer default null,

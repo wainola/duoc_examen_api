@@ -1,7 +1,7 @@
 -- +goose Up
 -- SQL in this section is executed when the migration is applied.
 CREATE TABLE usuario(
-  id integer primary key,
+  id text primary key,
   rut text not null,
   dv text not null,
   nombre text not null,

@@ -8,7 +8,7 @@ user = Blueprint('user', __name__)
 current_directory = os.getcwd()
 DB_PATH = f'{current_directory}/db/db_examen.db'
 
-@user.route('/user', methods=['POST', 'GET', 'DELETE'])
+@user.route('/user', methods=['POST', 'GET', 'DELETE', 'PUT'])
 def usuarios():
   if request.method == 'POST':
     user = request.get_json()
@@ -75,3 +75,5 @@ def usuarios():
     
     if cur_row_count == 0:
       return jsonify({ 'user_deleted': False })
+
+    
