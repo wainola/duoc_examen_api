@@ -14,6 +14,8 @@ conn = sqlite3.connect(DB_PATH)
 def usuarios():
   if request.method == 'POST':
     user = request.get_json()
+    estado_sol = request.get_json()['estado_solicitud']
+    credito = request.get_json()['credito']
 
     id = user['user']['id']
     rut = user['user']['rut']
@@ -35,9 +37,27 @@ def usuarios():
     sueldo_liquido = user['user']['sueldo_liquido']
     enfermedad_cronica = user['user']['enfermedad_cronica']
 
-    query = f'INSERT INTO usuario (id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, password, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido, enfermedad_cronica) values ("{id}", "{rut}", "{dv}", "{nombre}", "{apellido_paterno}", "{apellido_materno}", "{fecha_nacimiento}", "{password}", "{sexo}", "{estado_civil}", "{hijos}", "{telefono}", "{email}", "{direccion}", "{comuna}", "{educacion}", "{renta}", "{sueldo_liquido}", "{enfermedad_cronica}")'
+    id_estado = estado_sol['id']
+    estado = estado_sol['estado_solicitud']
 
-    cursor = conn.execute(query)
+    id_credito = credito['id']
+
+    sql = '''
+          INSERT INTO usuario (id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, password, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido, enfermedad_cronica) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+          '''
+    sql_request_status = '''
+                          INSERT INTO estado_solicitud (id, estado_solicitud) VALUES (?, ?)
+                         '''
+
+    sql_credito = '''
+                  INSERT INTO credito (id, fk_usuario_id, fk_estado_solicitud_id) VALUES (?,?,?)
+                  '''
+
+    cursor = conn.execute(query, (id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, password, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido, enfermedad_cronica,))
+
+    cur_request = conn.execute(sql_request_status, (id_estado, estado,))
+
+    cur_credito = conn.execute(sql_credito, (id_credito, id, id_estado,))
 
     conn.commit()
 
