@@ -139,12 +139,16 @@ def usuarios():
 @user.route('/getAll', methods=['GET'])
 def getAllData():
     if request.method == 'GET':
-      cursor = conn.execute('SELECT * FROM usuario')
-      cur_estados = conn.execute('SELECT * FROM estado_solicitud')
-      cur_credito = conn.execute('SELECT * FROM credito')
+      cursor = conn.execute('SELECT usuario.*, estado_solicitud.* FROM usuario JOIN credito ON usuario.id = credito.fk_usuario_id JOIN estado_solicitud on credito.fk_estado_solicitud_id = estado_solicitud.id')
+      # cur_estados = conn.execute('SELECT * FROM estado_solicitud')
+      # cur_credito = conn.execute('SELECT * FROM credito')
 
-      usuarios = cursor.fetchall()
-      estados = cur_estados.fetchall()
-      credito = cur_credito.fetchall()
+      usuarios = []
+      allUserData = []
+      for row in cursor:
+        usuarios.append({ 'id': row[0], 'rut': f'{row[1]}-{row[2]}', 'nombre': f'{row[3]} {row[4]} {row[5]}', 'estado': row[21]})
+        allUserData.append({ 'id': row[0], 'rut': f'{row[1]}-{row[2]}', 'nombre': f'{row[3]} {row[4]} {row[5]}', 'estado': row[21], 'sexo': row[8], 'estado_civil': row[9], 'hijos': row[10], 'telfono': row[11], 'correo': row[12], 'direccion': row[13], 'comuna': row[14], 'educacion': row[15], 'renta': row[16], 'sueldo_liquido': row[17], 'enfermedad_cronica': row[18], 'estado_solicitud': row[21], 'id_solicitud': row[20]})
+      # estados = cur_estados.fetchall()
+      # credito = cur_credito.fetchall()
 
-      return jsonify({'usuarios': usuarios, 'estados': estados, 'credito': credito })
+      return jsonify({'usuarios': usuarios, 'all_user_data': allUserData })
