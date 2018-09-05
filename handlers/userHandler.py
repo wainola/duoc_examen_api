@@ -8,7 +8,7 @@ user = Blueprint('user', __name__)
 current_directory = os.getcwd()
 DB_PATH = f'{current_directory}/db/db_examen.db'
 
-@user.route('/user', methods=['POST', 'GET'])
+@user.route('/user', methods=['POST', 'GET', 'DELETE'])
 def usuarios():
   if request.method == 'POST':
     user = request.get_json()
@@ -55,3 +55,23 @@ def usuarios():
     usuarios = cursor.fetchall()
 
     return jsonify({'msg': usuarios})
+
+  if request.method == 'DELETE':
+
+    id_user = request.get_json()['user']['id']
+
+    conn = sqlite3.connect(DB_PATH)
+
+    delete_query = f'DELETE FROM usuario WHERE id = "{id_user}"'
+
+    cursor = conn.execute(delete_query)
+
+    cur_row_count = cursor.rowcount
+
+    conn.commit()
+
+    if cur_row_count == 1:
+      return jsonify({ 'user_deleted': True })
+    
+    if cur_row_count == 0:
+      return jsonify({ 'user_deleted': False })
