@@ -12,6 +12,8 @@ conn = sqlite3.connect(DB_PATH)
 
 @user.route('/user', methods=['POST', 'GET', 'DELETE', 'PUT'])
 def usuarios():
+
+  # CREATE USER
   if request.method == 'POST':
     user = request.get_json()
     estado_sol = request.get_json()['estado_solicitud']
@@ -53,7 +55,7 @@ def usuarios():
                   INSERT INTO credito (id, fk_usuario_id, fk_estado_solicitud_id) VALUES (?,?,?)
                   '''
 
-    cursor = conn.execute(query, (id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, password, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido, enfermedad_cronica,))
+    cursor = conn.execute(sql, (id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, password, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido, enfermedad_cronica,))
 
     cur_request = conn.execute(sql_request_status, (id_estado, estado,))
 
@@ -63,7 +65,7 @@ def usuarios():
 
     return jsonify({ 'msg': cursor.lastrowid})
 
-
+  #  GET USERS
   if request.method == 'GET':
 
     cursor = conn.execute('SELECT * FROM usuario')
@@ -90,6 +92,7 @@ def usuarios():
     if cur_row_count == 0:
       return jsonify({ 'user_deleted': False })
 
+  # UPDATE USERS
   if request.method == 'PUT':
 
     user = request.get_json()['user']
