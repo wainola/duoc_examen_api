@@ -135,3 +135,16 @@ def usuarios():
     conn.commit()
 
     return jsonify({ 'msg': 'solicitud actualizada', 'status': 200 })
+
+@user.route('/getAll', methods=['GET'])
+def getAllData():
+    if request.method == 'GET':
+      cursor = conn.execute('SELECT * FROM usuario')
+      cur_estados = conn.execute('SELECT * FROM estado_solicitud')
+      cur_credito = conn.execute('SELECT * FROM credito')
+
+      usuarios = cursor.fetchall()
+      estados = cur_estados.fetchall()
+      credito = cur_credito.fetchall()
+
+      return jsonify({'usuarios': usuarios, 'estados': estados, 'credito': credito })
