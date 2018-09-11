@@ -2,7 +2,6 @@ import sqlite3
 import os
 from flask import jsonify, Blueprint, request
 
-
 user = Blueprint('user', __name__)
 
 current_directory = os.getcwd()
@@ -38,6 +37,7 @@ def create_request():
     renta = user['user']['renta']
     sueldo_liquido = user['user']['sueldo_liquido']
     enfermedad_cronica = user['user']['enfermedad_cronica']
+    role = user['user']['role']
 
     id_estado = estado_sol['id']
     estado = estado_sol['estado_solicitud']
@@ -45,7 +45,7 @@ def create_request():
     id_credito = credito['id']
 
     sql = '''
-          INSERT INTO usuario (id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, password, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido, enfermedad_cronica) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+          INSERT INTO usuario (id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, password, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido, enfermedad_cronica, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
           '''
     sql_request_status = '''
                           INSERT INTO estado_solicitud (id, estado_solicitud) VALUES (?, ?)
@@ -55,7 +55,7 @@ def create_request():
                   INSERT INTO credito (id, fk_usuario_id, fk_estado_solicitud_id) VALUES (?,?,?)
                   '''
 
-    cursor = conn.execute(sql, (id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, password, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido, enfermedad_cronica,))
+    cursor = conn.execute(sql, (id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, password, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido, enfermedad_cronica, role,))
 
     cur_request = conn.execute(sql_request_status, (id_estado, estado,))
 

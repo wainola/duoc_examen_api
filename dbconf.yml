@@ -1,0 +1,3 @@
+development:
+  driver: sqlite3
+  dsn: ./db/db_examen.db
