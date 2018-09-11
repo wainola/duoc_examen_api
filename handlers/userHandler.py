@@ -10,8 +10,8 @@ DB_PATH = f'{current_directory}/db/db_examen.db'
 
 conn = sqlite3.connect(DB_PATH)
 
-@user.route('/user', methods=['POST', 'GET', 'DELETE', 'PUT'])
-def usuarios():
+@user.route('/create-resquest', methods=['POST', 'GET', 'DELETE', 'PUT'])
+def create_request():
 
   # CREATE USER
   if request.method == 'POST':

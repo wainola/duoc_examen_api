@@ -11,7 +11,7 @@ conn = sqlite3.connect(DB_PATH)
 @signup.route('/signup', methods=['POST'])
 def registro():
   if request.method == 'POST':
-    registro = request.get_json()['new_register']
+    registro = request.get_json()['new_user']
 
     id = registro['id']
     rut = registro['rut']
@@ -30,4 +30,4 @@ def registro():
 
     conn.commit()
 
-    return jsonify({'msg': cursor.lastrowid})
+    return jsonify({'msg': cursor.lastrowid, "status": 201})
