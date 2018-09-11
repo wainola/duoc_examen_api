@@ -10,7 +10,7 @@ DB_PATH = f'{current_directory}/db/db_examen.db'
 
 conn = sqlite3.connect(DB_PATH)
 
-@user.route('/create-resquest', methods=['POST', 'GET', 'DELETE', 'PUT'])
+@user.route('/create-resquest', methods=['POST'])
 def create_request():
 
   # CREATE USER
@@ -65,7 +65,8 @@ def create_request():
 
     return jsonify({ 'msg': cursor.lastrowid})
 
-  #  GET USERS
+@user.route('/user', methods=['GET', 'DELETE', 'PUT'])
+def get_users():
   if request.method == 'GET':
 
     cursor = conn.execute('SELECT * FROM usuario')

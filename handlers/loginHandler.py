@@ -7,6 +7,7 @@ login = Blueprint('login', __name__)
 current_directory = os.getcwd()
 
 DB_PATH = f'{current_directory}/db/db_examen.db'
+conn = sqlite3.connect(DB_PATH)
 
 @login.route('/login', methods=['POST'])
 def getCredentials():
@@ -16,15 +17,26 @@ def getCredentials():
     rut = credentials['credentials']['rut']
     password = credentials['credentials']['password']
     
-    conn = sqlite3.connect(DB_PATH)
     estado = 'PENDIENTE'
 
     sql = '''
-          SELECT rut, password FROM usuario WHERE rut = ?
+          SELECT nombre, apellido_paterno, apellido_materno, rut, password FROM usuario WHERE rut = ?
           '''
 
     cursor = conn.execute(sql, (rut,))
-    if len(cursor.fetchall()) == 0:
-      return jsonify({ 'msg': 'no hay usuarios en la base de datos', 'status': 404})
-    else:
-      return jsonify({ 'msg': 'usuario encontrado', 'status': 200})
+    result = cursor.fetchall()
+    if len(result) != 0:
+      data = result[0]
+      user = {
+        "nombre": data[0],
+        "apellido_paterno": data[0],
+        "apellido_materno": data[2],
+        "rut": data[3],
+        "password": data[4]
+      }
+      if user['password'] == password:
+        return jsonify({ 'user': user, 'auth': True, 'status': 200 })
+      else:
+        return jsonify({ 'msg': 'contraseñas no coinciden', 'auth': False, 'status': 206})
+    if len(result) == 0:
+      return jsonify({ 'msg': 'usuario no encontrado', 'status': 404})
