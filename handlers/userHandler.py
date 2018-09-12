@@ -25,7 +25,6 @@ def create_request():
     apellido_paterno = user['user']['apellido_paterno']
     apellido_materno = user['user']['apellido_materno']
     fecha_nacimiento = user['user']['fecha_nacimiento']
-    password = user['user']['password']
     sexo = user['user']['sexo']
     estado_civil = user['user']['estado_civil']
     hijos = user['user']['hijos']
@@ -45,7 +44,7 @@ def create_request():
     id_credito = credito['id']
 
     sql = '''
-          INSERT INTO usuario (id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, password, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido, enfermedad_cronica, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+          INSERT INTO usuario (id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido, enfermedad_cronica, role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
           '''
     sql_request_status = '''
                           INSERT INTO estado_solicitud (id, estado_solicitud) VALUES (?, ?)
@@ -55,7 +54,7 @@ def create_request():
                   INSERT INTO credito (id, fk_usuario_id, fk_estado_solicitud_id) VALUES (?,?,?)
                   '''
 
-    cursor = conn.execute(sql, (id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, password, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido, enfermedad_cronica, role,))
+    cursor = conn.execute(sql, (id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido, enfermedad_cronica, role,))
 
     cur_request = conn.execute(sql_request_status, (id_estado, estado,))
 
