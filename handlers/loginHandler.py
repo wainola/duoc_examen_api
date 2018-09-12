@@ -20,7 +20,7 @@ def getCredentials():
     estado = 'PENDIENTE'
 
     sql = '''
-          SELECT nombre, apellido_paterno, apellido_materno, rut, password FROM usuario WHERE rut = ?
+          SELECT nombre, apellido_paterno, apellido_materno, rut, dv, password FROM usuario WHERE rut = ?
           '''
 
     cursor = conn.execute(sql, (rut,))
@@ -31,10 +31,10 @@ def getCredentials():
         "nombre": data[0],
         "apellido_paterno": data[0],
         "apellido_materno": data[2],
-        "rut": data[3],
-        "password": data[4]
+        "rut": f'{data[3]}-{data[4]}'
       }
-      if user['password'] == password:
+      password_to_compare = data[5]
+      if password_to_compare == password:
         return jsonify({ 'user': user, 'auth': True, 'status': 200 })
       else:
         return jsonify({ 'msg': 'contraseñas no coinciden', 'auth': False, 'status': 206})
