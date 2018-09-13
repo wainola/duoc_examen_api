@@ -15,7 +15,7 @@ CREATE TABLE usuario(
   apellido_paterno text not null,
   apellido_materno text not null,
   fecha_nacimiento text not null,
-  password text not null,
+  password text,
   sexo text,
   estado_civil text,
   hijos text,
@@ -27,12 +27,13 @@ CREATE TABLE usuario(
   renta text,
   sueldo_liquido integer,
   enfermedad_cronica text,
-  creada_en datetime default current_timestamp
+  creada_en datetime default current_timestamp,
+  role text
 );
 
 INSERT INTO usuario
-SELECT id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, password, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido enfermedad_cronica creada_en 
-FROM usuario_temp;
+SELECT id, rut, dv, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, password, sexo, estado_civil, hijos, telefono, email, direccion, comuna, educacion, renta, sueldo_liquido, enfermedad_cronica, creada_en, 'usuario'
+FROM usuario_tmp;
 
 DROP TABLE usuario_temp;
 

@@ -8,7 +8,8 @@ CREATE TABLE ejecutivo(
   apellido_paterno text not null,
   apellido_materno text not null,
   fecha_nacimiento text not null,
-  creada_en datetime default current_timestamp
+  creada_en datetime default current_timestamp,
+  password text
 );
 
 -- +goose Down

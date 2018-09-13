@@ -29,7 +29,7 @@ def getCredentials():
       data = result[0]
       user = {
         "nombre": data[0],
-        "apellido_paterno": data[0],
+        "apellido_paterno": data[1],
         "apellido_materno": data[2],
         "rut": f'{data[3]}-{data[4]}'
       }

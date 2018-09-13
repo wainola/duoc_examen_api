@@ -54,3 +54,33 @@ def ejecutivos():
       return jsonify({'executive_deleted': True})
     if cur_row_count == 0:
       return jsonify({'executive_deteled': False})
+
+@executive.route('/login-executive', methods=['POST'])
+def loginExecutive():
+  if request.method == 'POST':
+    credentials = request.get_json()
+
+    rut = credentials['credentials']['rut']
+    password = credentials['credentials']['password']
+
+    sql = '''
+          SELECT nombre, apellido_paterno, apellido_materno, rut, dv, password FROM ejecutivo WHERE rut = ?
+          '''
+
+    cursor = conn.execute(sql, (rut,))
+    result = cursor.fetchall()
+    if len(result) != 0:
+      data = result[0]
+      user = {
+        "nombre": data[0],
+        "apellido_paterno": data[1],
+        "apellido_materno": data[2],
+        "rut": f'{data[3]}-{data[4]}'
+      }
+      password_to_compare = data[5]
+      if password_to_compare == password:
+        return jsonify({ "user": user, "auth": True, "status": 200 })
+      else:
+        return jsonify({ "msg": "contraseñas no coinciden", "auth": False, "status": 206})
+    if len(result) == 0:
+      return jsonify({ "msg": "usuario no encontrado", "status": 404 })

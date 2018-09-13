@@ -7,9 +7,9 @@ user = Blueprint('user', __name__)
 current_directory = os.getcwd()
 DB_PATH = f'{current_directory}/db/db_examen.db'
 
-conn = sqlite3.connect(DB_PATH)
+conn = sqlite3.connect(DB_PATH, check_same_thread=False)
 
-@user.route('/create-resquest', methods=['POST'])
+@user.route('/user/create-request', methods=['POST'])
 def create_request():
 
   # CREATE USER
@@ -62,7 +62,7 @@ def create_request():
 
     conn.commit()
 
-    return jsonify({ 'msg': cursor.lastrowid})
+    return jsonify({ 'msg': cursor.lastrowid, 'status': 200})
 
 @user.route('/user', methods=['GET', 'DELETE', 'PUT'])
 def get_users():
@@ -76,7 +76,9 @@ def get_users():
 
   if request.method == 'DELETE':
 
-    id_user = request.get_json()['user']['id']
+    print('::::::::::::::', request.get_json())
+
+    id_user = request.get_json()['body']['user']['id']
 
     delete_query = f'DELETE FROM usuario WHERE id = "{id_user}"'
 
@@ -144,7 +146,8 @@ def getAllData():
       usuarios = []
       allUserData = []
       for row in cursor:
-        usuarios.append({ 'id': row[0], 'rut': f'{row[1]}-{row[2]}', 'nombre': f'{row[3]} {row[4]} {row[5]}', 'estado': row[21]})
-        allUserData.append({ 'id': row[0], 'rut': f'{row[1]}-{row[2]}', 'nombre': f'{row[3]} {row[4]} {row[5]}', 'estado': row[21], 'sexo': row[8], 'estado_civil': row[9], 'hijos': row[10], 'telfono': row[11], 'correo': row[12], 'direccion': row[13], 'comuna': row[14], 'educacion': row[15], 'renta': row[16], 'sueldo_liquido': row[17], 'enfermedad_cronica': row[18], 'estado_solicitud': row[21], 'id_solicitud': row[20]})
+        print('rooooows=============', row[19])
+        usuarios.append({ 'id': row[0], 'rut': f'{row[1]}-{row[2]}', 'nombre': f'{row[3]} {row[4]} {row[5]}', 'estado': row[22]})
+        allUserData.append({ 'id': row[0], 'rut': f'{row[1]}-{row[2]}', 'nombre': f'{row[3]} {row[4]} {row[5]}', 'estado': row[21], 'sexo': row[8], 'estado_civil': row[9], 'hijos': row[10], 'telfono': row[11], 'correo': row[12], 'direccion': row[13], 'comuna': row[14], 'educacion': row[15], 'renta': row[16], 'sueldo_liquido': row[17], 'enfermedad_cronica': row[18], 'fecha_creacion': row[19], 'estado_solicitud': row[21], 'id_solicitud': row[20]})
 
       return jsonify({'usuarios': usuarios, 'all_user_data': allUserData })
