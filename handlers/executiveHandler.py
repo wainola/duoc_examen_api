@@ -7,7 +7,7 @@ executive = Blueprint('executive', __name__)
 current_directory = os.getcwd()
 DB_PATH = f'{current_directory}/db/db_examen.db'
 
-conn = sqlite3.connect(DB_PATH)
+conn = sqlite3.connect(DB_PATH, check_same_thread=False)
 
 @executive.route('/executive', methods=['POST', 'GET', 'DELETE'])
 def ejecutivos():

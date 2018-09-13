@@ -6,7 +6,7 @@ signup = Blueprint('signup', __name__)
 current_directory = os.getcwd()
 DB_PATH = f'{current_directory}/db/db_examen.db'
 
-conn = sqlite3.connect(DB_PATH)
+conn = sqlite3.connect(DB_PATH, check_same_thread=False)
 
 @signup.route('/signup', methods=['POST'])
 def registro():

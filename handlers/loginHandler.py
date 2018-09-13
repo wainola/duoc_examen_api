@@ -7,7 +7,7 @@ login = Blueprint('login', __name__)
 current_directory = os.getcwd()
 
 DB_PATH = f'{current_directory}/db/db_examen.db'
-conn = sqlite3.connect(DB_PATH)
+conn = sqlite3.connect(DB_PATH, check_same_thread=False)
 
 @login.route('/login', methods=['POST'])
 def getCredentials():
